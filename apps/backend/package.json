@@ -1,0 +1,31 @@
+{
+   "name": "@finance-os/backend",
+   "version": "1.0.0",
+   "private": true,
+   "description": "FinanceOS Backend API",
+   "type": "module",
+   "scripts": {
+      "dev": "tsx watch src/server.ts",
+      "build": "tsc",
+      "start": "node dist/server.js"
+   },
+   "dependencies": {
+      "@fastify/cors": "latest",
+      "@fastify/cookie": "latest",
+      "@fastify/helmet": "latest",
+      "bcrypt": "latest",
+      "dotenv": "latest",
+      "fastify": "latest",
+      "jsonwebtoken": "latest",
+      "mongoose": "latest",
+      "pino": "latest",
+      "zod": "latest"
+   },
+   "devDependencies": {
+      "@types/bcrypt": "latest",
+      "@types/jsonwebtoken": "latest",
+      "@types/node": "latest",
+      "tsx": "latest",
+      "typescript": "latest"
+   }
+}

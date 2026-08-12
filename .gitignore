@@ -1,0 +1,49 @@
+# Astro
+.astro/
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Vite
+.vite/
+
+# Turbo
+.turbo/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Coverage
+coverage/
+
+# Cache
+.cache/
+.eslintcache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+
+# TypeScript
+*.tsbuildinfo
