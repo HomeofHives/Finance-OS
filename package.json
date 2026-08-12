@@ -4,10 +4,10 @@
    "private": true,
    "description": "FinanceOS - Personal Finance Management Platform",
    "scripts": {
-      "dev": "pnpm --parallel dev",
+      "dev": "pnpm -r --parallel dev",
       "build": "pnpm -r build",
-      "lint": "pnpm -r lint",
-      "format": "pnpm -r format"
+      "lint": "pnpm -r --if-present lint",
+      "typecheck": "pnpm -r --if-present typecheck"
    },
    "engines": {
       "node": ">=26",

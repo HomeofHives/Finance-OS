@@ -1,34 +1,30 @@
 {
-  "name": "@finance-os/ui",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-
-  "exports": {
-    ".": "./src/index.ts",
-    "./styles.css": "./src/styles.css"
-  },
-
-  "scripts": {
-    "build": "tsc -p tsconfig.json"
-  },
-
-  "dependencies": {
-    "@radix-ui/react-slot": "latest",
-    "class-variance-authority": "latest",
-    "clsx": "latest",
-    "tailwind-merge": "latest"
-  },
-
-  "devDependencies": {
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
-    "typescript": "^5.9.2",
-    "tailwindcss": "latest"
-  },
-
-  "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  }
+   "name": "@finance-os/ui",
+   "version": "1.0.0",
+   "private": true,
+   "type": "module",
+   "exports": {
+      ".": "./src/index.ts",
+      "./styles.css": "./src/styles.css"
+   },
+   "scripts": {
+      "build": "tsc -p tsconfig.json",
+      "typecheck": "tsc -p tsconfig.json --noEmit"
+   },
+   "dependencies": {
+      "@radix-ui/react-slot": "latest",
+      "class-variance-authority": "latest",
+      "clsx": "latest",
+      "tailwind-merge": "latest"
+   },
+   "devDependencies": {
+      "@types/react": "latest",
+      "@types/react-dom": "latest",
+      "typescript": "^5.9.2",
+      "tailwindcss": "latest"
+   },
+   "peerDependencies": {
+      "react": "^19.0.0",
+      "react-dom": "^19.0.0"
+   }
 }
