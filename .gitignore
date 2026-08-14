@@ -1,49 +1,120 @@
-# Astro
-.astro/
+# ============================================================
+# Finance-OS — Root Workspace Git Ignore
+# ============================================================
 
+# ------------------------------------------------------------
 # Dependencies
+# ------------------------------------------------------------
 node_modules/
+.pnpm-store/
 
-# Build output
-dist/
-build/
-
-# Vite
-.vite/
-
-# Turbo
-.turbo/
-
-# Environment variables
+# ------------------------------------------------------------
+# Environment / Secrets
+# ------------------------------------------------------------
 .env
 .env.*
 !.env.example
 
+# ------------------------------------------------------------
+# Build / Generated Output
+# ------------------------------------------------------------
+dist/
+build/
+out/
+coverage/
+.vite/
+.turbo/
+.astro/
+
+# Astro generated files
+docs/.astro/
+docs/dist/
+
+# Vite / frontend generated files
+apps/frontend/dist/
+
+# Backend generated files
+apps/backend/dist/
+
+# Shared UI generated files
+packages/ui/dist/
+
+# ------------------------------------------------------------
 # Logs
+# ------------------------------------------------------------
 *.log
+logs/
 npm-debug.log*
 pnpm-debug.log*
 yarn-debug.log*
+lerna-debug.log*
 
-# Coverage
-coverage/
-
-# Cache
-.cache/
-.eslintcache
-
-# OS
+# ------------------------------------------------------------
+# OS Files
+# ------------------------------------------------------------
 .DS_Store
 Thumbs.db
+Desktop.ini
 
-# IDE
+# Windows thumbnail cache
+ehthumbs.db
+
+# ------------------------------------------------------------
+# IDE / Editors
+# ------------------------------------------------------------
 .vscode/*
 !.vscode/extensions.json
-.idea/
+!.vscode/settings.json
 
-# Temporary files
+.idea/
+*.iml
+
+# ------------------------------------------------------------
+# Temporary / Backup Files
+# ------------------------------------------------------------
 *.tmp
 *.temp
+*.bak
+*.swp
+*.swo
+*~
 
+# ------------------------------------------------------------
 # TypeScript
+# ------------------------------------------------------------
 *.tsbuildinfo
+
+# ------------------------------------------------------------
+# Testing
+# ------------------------------------------------------------
+.nyc_output/
+playwright-report/
+test-results/
+
+# ------------------------------------------------------------
+# Cache
+# ------------------------------------------------------------
+.cache/
+.parcel-cache/
+.eslintcache
+
+# ------------------------------------------------------------
+# Python (if used for tooling/scripts later)
+# ------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# ------------------------------------------------------------
+# Docker
+# ------------------------------------------------------------
+docker/data/
+docker/volumes/
+
+# ------------------------------------------------------------
+# Local development files
+# ------------------------------------------------------------
+.local/
+.local.*
