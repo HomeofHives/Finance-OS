@@ -1,13 +1,45 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+   <head>
+      <meta charset="UTF-8" />
+      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta
+         name="description"
+         content="Finance-OS — a secure, open-source personal finance platform with liquid glass design."
+      />
+      <meta name="theme-color" content="#6d28d9" />
+      <title>Finance-OS</title>
+      <script>
+         /* Apply the saved/system theme before first paint — prevents a flash of the wrong theme. */
+         (function () {
+            try {
+               var stored = localStorage.getItem("finance-os-theme");
+               var theme =
+                  stored === "light" || stored === "dark"
+                     ? stored
+                     : window.matchMedia &&
+                         window.matchMedia("(prefers-color-scheme: dark)").matches
+                       ? "dark"
+                       : "light";
+               var root = document.documentElement;
+               root.classList.toggle("dark", theme === "dark");
+               root.dataset.theme = theme;
+               root.style.colorScheme = theme;
+               var meta = document.querySelector('meta[name="theme-color"]');
+               if (meta) meta.content = theme === "dark" ? "#0b0a13" : "#6d28d9";
+            } catch (e) {}
+         })();
+      </script>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link
+         href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+         rel="stylesheet"
+      />
+   </head>
+   <body>
+      <div id="root"></div>
+      <script type="module" src="/src/main.tsx"></script>
+   </body>
 </html>

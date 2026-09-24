@@ -9,9 +9,7 @@ const homeRoute = createRoute({
    component: HomePage,
 });
 
-const routeTree = rootRoute.addChildren([
-   homeRoute,
-]);
+const routeTree = rootRoute.addChildren([homeRoute]);
 
 export const router = createRouter({
    routeTree,

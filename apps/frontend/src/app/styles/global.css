@@ -1,2 +1,443 @@
 @import "@finance-os/ui/styles.css";
 @import "tailwindcss";
+
+@source "../../../../../packages/ui/src/**/*.{ts,tsx}";
+
+@theme {
+   --color-surface-0: var(--surface-0);
+   --color-surface-1: var(--surface-1);
+   --color-surface-2: var(--surface-2);
+
+   --color-text-primary: var(--text-primary);
+   --color-text-secondary: var(--text-secondary);
+   --color-text-muted: var(--text-muted);
+   --color-text-faint: var(--text-faint);
+
+   --color-border: var(--border);
+   --color-border-strong: var(--border-strong);
+   --color-border-glass: var(--glass-border);
+
+   --color-accent: var(--accent);
+   --color-accent-strong: var(--accent-strong);
+   --color-accent-soft: var(--accent-soft);
+   --color-accent-bg: var(--accent-bg);
+
+   --color-gain: var(--gain);
+   --color-gain-bg: var(--gain-bg);
+   --color-expense: var(--expense);
+   --color-expense-bg: var(--expense-bg);
+
+   /* Flippable marketing surfaces — invert cleanly with .dark */
+   --color-glass-bg: var(--glass-bg);
+   --color-glass-bg-subtle: var(--glass-bg-subtle);
+   --color-glass-bg-strong: var(--glass-bg-strong);
+   --color-glass-bg-heavy: var(--glass-bg-heavy);
+
+   --color-glass-border: var(--glass-border);
+   --color-glass-border-subtle: var(--glass-border-subtle);
+   --color-glass-border-strong: var(--glass-border-strong);
+
+   --color-inverse-surface: var(--inverse-surface);
+   --color-inverse-text: var(--inverse-text);
+   --color-hover-surface: var(--hover-surface);
+
+   --color-destructive: var(--expense);
+}
+
+/* ── Base ── */
+/* Lenis smooth scroll — recommended setup (class applied on <html> by the lib) */
+html.lenis,
+html.lenis body {
+   height: auto;
+}
+.lenis.lenis-smooth {
+   scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+   overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+   overflow: hidden;
+}
+
+@layer base {
+   html {
+      scroll-behavior: smooth;
+      /* prevent sticky header overlap jump (nav ~56px) */
+      scroll-padding-top: 76px;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      font-variant-ligatures: common-ligatures;
+      text-rendering: optimizeLegibility;
+   }
+
+   body {
+      font-family: var(--font-sans);
+      font-optical-sizing: auto;
+      font-weight: 400;
+      letter-spacing: -0.011em;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: var(--surface-0);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+      /* smooth ink/pearl swap on theme change */
+      transition:
+         color 0.3s ease,
+         background-color 0.3s ease;
+   }
+
+   /* Ambient mesh gradient that lives behind everything */
+   body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: var(--gradient-mesh), var(--bg-gradient);
+      pointer-events: none;
+      transition: background 0.3s ease;
+   }
+
+   /* Subtle dot grid texture */
+   body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.22;
+      background-image: radial-gradient(var(--dot-grid) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: radial-gradient(ellipse 90% 70% at 50% 10%, black 40%, transparent 75%);
+      pointer-events: none;
+   }
+
+   ::selection {
+      background-color: var(--accent-bg);
+      color: var(--accent-strong);
+   }
+
+   strong,
+   b {
+      font-weight: 650;
+      letter-spacing: -0.015em;
+   }
+
+   /* Scrollbar — glassy */
+   * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--scroll-thumb) transparent;
+   }
+   ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+   }
+   ::-webkit-scrollbar-thumb {
+      background: var(--scroll-thumb);
+      border-radius: 999px;
+   }
+   ::-webkit-scrollbar-track {
+      background: transparent;
+   }
+}
+
+/* ── Layout — compact consistent rhythm ── */
+@layer components {
+   :root {
+      --section-y: clamp(40px, 4.8vw, 68px);
+      --section-y-compact: clamp(20px, 2.8vw, 32px);
+      --stack-gap: clamp(22px, 2.8vw, 34px); /* header → card grid */
+      --stack-gap-sm: 18px;
+   }
+
+   .container-page {
+      margin-inline: auto;
+      width: calc(100% - 2rem);
+      max-width: 80rem;
+   }
+   @media (min-width: 640px) {
+      .container-page {
+         width: calc(100% - 3rem);
+      }
+   }
+
+   /* Canonical vertical rhythm; hero and compact override the top padding below */
+   .section {
+      padding-block: var(--section-y);
+   }
+   /* Defer render for below-the-fold sections (reserved height keeps scrollbar stable); avoid on hero/nav */
+   .section-lazy {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 920px;
+   }
+   .section-hero {
+      padding-top: clamp(28px, 4vw, 52px);
+      padding-bottom: var(--section-y);
+   }
+   .section-compact {
+      padding-block: var(--section-y-compact);
+   }
+   /* Inner stack — header to grid/cards */
+   .stack {
+      margin-top: var(--stack-gap);
+   }
+   .stack-sm {
+      margin-top: var(--stack-gap-sm);
+   }
+
+   /* Fluid glass motion — subtle drift + hover lift */
+   @keyframes glass-float {
+      0%,
+      100% {
+         transform: translateY(0);
+      }
+      50% {
+         transform: translateY(-4px);
+      }
+   }
+   /* Centered variant — keeps translateX(-50%) while drifting */
+   @keyframes glass-float-x {
+      0%,
+      100% {
+         transform: translateX(-50%) translateY(0);
+      }
+      50% {
+         transform: translateX(-50%) translateY(-6px);
+      }
+   }
+   @keyframes glass-shimmer {
+      0% {
+         opacity: 0;
+         transform: translateX(-60%) skewX(-12deg);
+      }
+      50% {
+         opacity: 1;
+      }
+      100% {
+         opacity: 0;
+         transform: translateX(160%) skewX(-12deg);
+      }
+   }
+   .glass-float {
+      animation: glass-float 7s ease-in-out infinite;
+      will-change: transform;
+   }
+   .glass-float-x {
+      animation: glass-float-x 9s ease-in-out infinite;
+      will-change: transform;
+   }
+
+   /* Data-flow rail — traveling pulse along the connector */
+   @keyframes flow-pulse {
+      0% {
+         top: -2px;
+         opacity: 0;
+         transform: scale(0.6);
+      }
+      12% {
+         opacity: 1;
+         transform: scale(1);
+      }
+      82% {
+         opacity: 1;
+         transform: scale(1);
+      }
+      100% {
+         top: calc(100% + 2px);
+         opacity: 0;
+         transform: scale(0.6);
+      }
+   }
+   .flow-rail {
+      position: relative;
+   }
+   .flow-rail::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -2px;
+      height: 5px;
+      width: 5px;
+      margin-left: -2.5px;
+      border-radius: 999px;
+      background: var(--gradient-accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+      animation: flow-pulse 4.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+   }
+   @media (prefers-reduced-motion: reduce) {
+      .glass-float {
+         animation: none;
+      }
+      .glass-float-x {
+         animation: none;
+      }
+      .flow-rail::after {
+         animation: none;
+         display: none;
+      }
+   }
+
+   /* Eyebrow — pill with glass accent */
+   .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+   }
+   .eyebrow::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+      flex-shrink: 0;
+   }
+
+   /* Eyebrow in a glass pill — high contrast */
+   .eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.38rem 0.9rem;
+      border-radius: 999px;
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      color: var(--accent-strong);
+      background: var(--glass-bg-strong);
+      border: 1px solid var(--glass-border-strong);
+      backdrop-filter: blur(16px) saturate(1.2);
+      box-shadow:
+         0 1px 0 var(--edge) inset,
+         0 4px 16px rgba(109, 40, 217, 0.08);
+   }
+
+   /* ── Display — Space Grotesk aesthetic ── */
+   .display {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      line-height: 0.92;
+      color: var(--text-primary);
+      text-wrap: balance;
+      font-optical-sizing: auto;
+   }
+   .display-sm {
+      font-family: var(--font-display);
+      font-size: clamp(1.9rem, 4.6vw, 2.95rem);
+      font-weight: 700;
+      letter-spacing: -0.045em;
+      line-height: 0.98;
+      color: var(--text-primary);
+      text-wrap: balance;
+   }
+   .display-serif {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: -0.03em;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+   }
+   .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.12;
+      color: var(--text-primary);
+      text-wrap: balance;
+   }
+   .page-subtitle {
+      font-size: 1.02rem;
+      line-height: 1.7;
+      letter-spacing: -0.01em;
+      color: var(--text-secondary);
+      text-wrap: pretty;
+   }
+   .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.65rem, 3.3vw, 2.15rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.06;
+      color: var(--text-primary);
+      text-wrap: balance;
+   }
+   .section-description {
+      font-size: 1.02rem;
+      line-height: 1.7;
+      letter-spacing: -0.011em;
+      color: var(--text-secondary);
+      text-wrap: pretty;
+   }
+   .card-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 650;
+      letter-spacing: -0.025em;
+      line-height: 1.3;
+      color: var(--text-primary);
+   }
+   .stat-label {
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+   }
+   .stat-value {
+      font-family: var(--font-display);
+      font-size: clamp(1.55rem, 3vw, 2.05rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+   }
+   .mono {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+   }
+
+   /* ── Glass Surfaces ── */
+
+   .glass-orb {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(60px);
+      pointer-events: none;
+      opacity: 0.5;
+   }
+
+   .text-gradient {
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+   }
+   /* serif italic gradient for hero accent */
+   .text-gradient-serif {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+   }
+}

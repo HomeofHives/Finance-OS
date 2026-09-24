@@ -1,17 +1,27 @@
-import { Button } from "@finance-os/ui";
+import { HeroSection } from "./components/HeroSection";
+import { Navbar } from "./components/Navbar";
+import { TrustStatement } from "./components/TrustStatement";
+import { CapabilitiesSection } from "./components/CapabilitiesSection";
+import { ProductShowcase } from "./components/ProductShowcase";
+import { HowItWorksSection } from "./components/HowItWorksSection";
+import { SecuritySection } from "./components/SecuritySection";
+import { FinalCTA } from "./components/FinalCTA";
+import { Footer } from "./components/Footer";
 
 export function HomePage() {
    return (
-      <main className="min-h-screen p-8">
-         <h1 className="text-3xl font-bold">Finance-OS</h1>
-
-         <p className="mt-2 text-muted-foreground">
-            Your financial operating system.
-         </p>
-
-         <Button className="mt-6">
-            Get Started
-         </Button>
-      </main>
+      <div className="min-h-screen overflow-x-clip font-sans text-text-primary antialiased">
+         <Navbar />
+         <main>
+            <HeroSection />
+            <TrustStatement />
+            <CapabilitiesSection />
+            <ProductShowcase />
+            <HowItWorksSection />
+            <SecuritySection />
+            <FinalCTA />
+         </main>
+         <Footer />
+      </div>
    );
 }

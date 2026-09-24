@@ -1,7 +1,9 @@
 packages:
-  - "apps/*"
-  - "packages/*"
-  - "docs"
+   - "apps/*"
+   - "packages/*"
+   - "docs"
 allowBuilds:
-  bcrypt: true
-  esbuild: true
+   esbuild: true
+overrides:
+   react: 19.3.0
+   react-dom: 19.3.0

@@ -1,21 +1,268 @@
-@import "tailwindcss";
+/* Finance-OS design tokens — single source of truth.
+ * Light mood lives on :root, dark mood on .dark; toggling the
+ * `.dark` class on <html> re-resolves every token through the cascade.
+ */
 
-@theme {
-   --color-primary: #18181b;
-   --color-primary-foreground: #fafafa;
+:root {
+   /* ── Surfaces — almost-white with cool undertone ── */
+   --surface-0: #f8f7ff;
+   --surface-1: #fcfcff;
+   --surface-2: #ffffff;
 
-   --color-secondary: #f4f4f5;
-   --color-secondary-foreground: #18181b;
+   /* ── Text — WCAG AA compliant on glass ── */
+   --text-primary: #0f0f14;
+   --text-secondary: #5a5a6e;
+   --text-muted: #9a9ab0;
+   --text-faint: #c2c2d6;
 
-   --color-destructive: #ef4444;
-   --color-destructive-foreground: #fafafa;
+   /* ── Borders — ultra-subtle hairlines ── */
+   --border: rgba(15, 15, 20, 0.07);
+   --border-strong: rgba(15, 15, 20, 0.12);
+   --border-glass: rgba(255, 255, 255, 0.6);
 
-   --color-background: #ffffff;
-   --color-foreground: #18181b;
+   /* ── Accent — violet → indigo spectrum ── */
+   --accent: #6d28d9;
+   --accent-strong: #5b21b6;
+   --accent-soft: #8b5cf6;
+   --accent-bg: #ede9fe;
+   --accent-foreground: #ffffff;
+   --accent-glow: rgba(109, 40, 217, 0.28);
 
-   --color-border: #e4e4e7;
-   --color-input: #e4e4e7;
-   --color-ring: #18181b;
+   /* ── Semantic ── */
+   --gain: #059669;
+   --gain-bg: #ecfdf5;
+   --gain-glow: rgba(5, 150, 105, 0.18);
+   --expense: #dc2626;
+   --expense-bg: #fef2f2;
+   --warning: #d97706;
+   --warning-bg: #fffbeb;
 
-   --radius-md: 0.375rem;
+   /* ── Glass — the core illusion ──
+    * Translucency + blur + inner highlight + soft shadow.
+    * Each tier adds depth without weight.
+    */
+   --glass-bg: rgba(255, 255, 255, 0.62);
+   --glass-bg-strong: rgba(255, 255, 255, 0.78);
+   --glass-bg-subtle: rgba(255, 255, 255, 0.42);
+   --glass-bg-heavy: rgba(255, 255, 255, 0.88);
+
+   --glass-border: rgba(255, 255, 255, 0.7);
+   --glass-border-strong: rgba(255, 255, 255, 0.85);
+   --glass-border-subtle: rgba(255, 255, 255, 0.4);
+
+   --glass-blur: 24px;
+   --glass-blur-sm: 16px;
+   --glass-blur-lg: 40px;
+   --glass-blur-xl: 64px;
+
+   --glass-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.9) inset, 0 8px 32px rgba(16, 14, 40, 0.06),
+      0 2px 8px rgba(16, 14, 40, 0.04);
+   --glass-shadow-strong:
+      0 1px 0 0 rgba(255, 255, 255, 0.95) inset, 0 20px 60px rgba(16, 14, 40, 0.09),
+      0 4px 16px rgba(16, 14, 40, 0.06);
+   --glass-shadow-floating:
+      0 1px 0 0 rgba(255, 255, 255, 0.9) inset, 0 32px 80px rgba(16, 14, 40, 0.1),
+      0 8px 24px rgba(16, 14, 40, 0.07);
+   --glass-highlight: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.85) 0%,
+      rgba(255, 255, 255, 0) 55%
+   );
+
+   /* ── Marketing surfaces — flippable ink/pearl ──
+    * These drive the landing experience: solid-ish panels
+    * that should INVERT cleanly between light and dark.
+    */
+   --inverse-surface: #ffffff;
+   --inverse-text: #0f0f14;
+   --hover-surface: rgba(15, 15, 20, 0.045);
+   --strip: rgba(255, 255, 255, 0.5);
+   --edge: rgba(255, 255, 255, 0.8);
+   --sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, transparent 52%);
+   --wash: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.55) 18%,
+      rgba(255, 255, 255, 0.55) 82%,
+      transparent 100%
+   );
+
+   --shadow-nav: 0 8px 28px rgba(16, 14, 40, 0.06);
+   --shadow-panel:
+      0 1px 0 0 rgba(255, 255, 255, 0.9) inset, 0 8px 32px rgba(16, 14, 40, 0.06),
+      0 2px 8px rgba(16, 14, 40, 0.04);
+   --shadow-panel-lg:
+      0 1px 0 0 rgba(255, 255, 255, 0.95) inset, 0 32px 80px rgba(16, 14, 40, 0.11),
+      0 8px 24px rgba(16, 14, 40, 0.07);
+   --shadow-float: 0 12px 32px rgba(16, 14, 40, 0.08);
+   --shadow-chip: 0 2px 12px rgba(16, 14, 40, 0.06);
+
+   --dot-grid: rgba(15, 15, 20, 0.08);
+   --scroll-thumb: rgba(15, 15, 20, 0.12);
+   --bg-gradient: linear-gradient(180deg, #f8f7ff 0%, #fcfcff 60%, #ffffff 100%);
+
+   /* ── Gradients — mesh & orbs ── */
+   --gradient-mesh:
+      radial-gradient(ellipse 800px 600px at 15% 10%, rgba(139, 92, 246, 0.14) 0%, transparent 55%),
+      radial-gradient(ellipse 700px 500px at 85% 15%, rgba(99, 102, 241, 0.1) 0%, transparent 55%),
+      radial-gradient(ellipse 900px 700px at 50% 95%, rgba(109, 40, 217, 0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 600px 400px at 70% 50%, rgba(236, 72, 153, 0.06) 0%, transparent 55%);
+   --gradient-accent: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 50%, #6366f1 100%);
+   --gradient-accent-soft: linear-gradient(
+      135deg,
+      rgba(109, 40, 217, 0.12) 0%,
+      rgba(139, 92, 246, 0.08) 100%
+   );
+   --gradient-card-shine: linear-gradient(
+      105deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.5) 45%,
+      transparent 60%
+   );
+
+   /* ── Radii ── */
+   --radius-glass: 20px;
+   --radius-glass-lg: 28px;
+   --radius-glass-sm: 14px;
+   --radius-pill: 9999px;
+
+   /* ── Typography — aesthetic stack ──
+    * Display: Space Grotesk (geometric, premium glass)
+    * Serif accent: Instrument Serif (italic flourish)
+    * Sans/Body: Manrope (modern, humanist description & UI text)
+    * Mono: JetBrains Mono (code/numbers)
+    */
+   --font-sans:
+      "Manrope", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, "Helvetica Neue", Arial, sans-serif;
+   --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+   --font-serif: "Instrument Serif", "Fraunces", Georgia, serif;
+   --font-mono:
+      "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
+}
+
+/* ─────────────────────────────────────────────
+ * DARK MOOD — Liquid Ink Glass
+ * Deep violet-ink surfaces, glowing translucent
+ * panels, and a luminous accent. Everything above
+ * re-cascades: no component knows about themes.
+ * ───────────────────────────────────────────── */
+.dark {
+   color-scheme: dark;
+
+   /* Surfaces — ink-violet, barely lifted */
+   --surface-0: #0b0a13;
+   --surface-1: #100f1b;
+   --surface-2: #151527;
+
+   /* Text — near-white with violet cast */
+   --text-primary: #eceaf8;
+   --text-secondary: #a8a5c9;
+   --text-muted: #6f6c92;
+   --text-faint: #4a4868;
+
+   /* Borders — faint luminous hairlines */
+   --border: rgba(255, 255, 255, 0.08);
+   --border-strong: rgba(255, 255, 255, 0.15);
+   --border-glass: rgba(255, 255, 255, 0.12);
+
+   /* Accent — luminous orchid-violet, glows harder */
+   --accent: #a78bfa;
+   --accent-strong: #c8b9ff;
+   --accent-soft: #8b5cf6;
+   --accent-bg: rgba(167, 139, 250, 0.14);
+   --accent-foreground: #0b0a13;
+   --accent-glow: rgba(167, 139, 250, 0.32);
+
+   /* Semantic — electric success / alert */
+   --gain: #34d399;
+   --gain-bg: rgba(52, 211, 153, 0.12);
+   --gain-glow: rgba(52, 211, 153, 0.22);
+   --expense: #f87171;
+   --expense-bg: rgba(248, 113, 113, 0.12);
+   --warning: #fbbf24;
+   --warning-bg: rgba(251, 191, 36, 0.12);
+
+   /* Glass — deep translucent panels lit from within */
+   --glass-bg: rgba(24, 22, 40, 0.6);
+   --glass-bg-strong: rgba(30, 28, 50, 0.8);
+   --glass-bg-subtle: rgba(18, 16, 34, 0.45);
+   --glass-bg-heavy: rgba(32, 30, 52, 0.9);
+
+   --glass-border: rgba(255, 255, 255, 0.09);
+   --glass-border-strong: rgba(255, 255, 255, 0.16);
+   --glass-border-subtle: rgba(255, 255, 255, 0.05);
+
+   --glass-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.06) inset, 0 16px 40px rgba(0, 0, 0, 0.45),
+      0 4px 12px rgba(0, 0, 0, 0.3);
+   --glass-shadow-strong:
+      0 1px 0 0 rgba(255, 255, 255, 0.08) inset, 0 24px 64px rgba(0, 0, 0, 0.55),
+      0 6px 20px rgba(0, 0, 0, 0.35);
+   --glass-shadow-floating:
+      0 1px 0 0 rgba(255, 255, 255, 0.07) inset, 0 36px 96px rgba(0, 0, 0, 0.6),
+      0 10px 28px rgba(0, 0, 0, 0.4);
+   --glass-highlight: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0) 55%
+   );
+
+   /* Marketing surfaces — ink-glass panels, ivory glyphs */
+   --inverse-surface: rgba(255, 255, 255, 0.075);
+   --inverse-text: #f3f1ff;
+   --hover-surface: rgba(255, 255, 255, 0.065);
+   --strip: rgba(255, 255, 255, 0.09);
+   --edge: rgba(255, 255, 255, 0.2);
+   --sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, transparent 52%);
+   --wash: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(124, 108, 255, 0.05) 18%,
+      rgba(124, 108, 255, 0.05) 82%,
+      transparent 100%
+   );
+
+   --shadow-nav: 0 10px 32px rgba(0, 0, 0, 0.55);
+   --shadow-panel:
+      0 1px 0 0 rgba(255, 255, 255, 0.07) inset, 0 16px 40px rgba(0, 0, 0, 0.4),
+      0 4px 12px rgba(0, 0, 0, 0.28);
+   --shadow-panel-lg:
+      0 1px 0 0 rgba(255, 255, 255, 0.08) inset, 0 32px 80px rgba(0, 0, 0, 0.55),
+      0 8px 24px rgba(0, 0, 0, 0.38);
+   --shadow-float: 0 14px 36px rgba(0, 0, 0, 0.45);
+   --shadow-chip: 0 4px 16px rgba(0, 0, 0, 0.35);
+
+   --dot-grid: rgba(255, 255, 255, 0.055);
+   --scroll-thumb: rgba(255, 255, 255, 0.16);
+   --bg-gradient: linear-gradient(180deg, #0b0a13 0%, #0e0c19 55%, #0b0a13 100%);
+
+   /* Gradients — richer mesh, brighter accent, softer shine */
+   --gradient-mesh:
+      radial-gradient(ellipse 800px 600px at 15% 10%, rgba(139, 92, 246, 0.2) 0%, transparent 55%),
+      radial-gradient(ellipse 700px 500px at 85% 15%, rgba(99, 102, 241, 0.15) 0%, transparent 55%),
+      radial-gradient(ellipse 900px 700px at 50% 95%, rgba(109, 40, 217, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 600px 400px at 70% 50%, rgba(236, 72, 153, 0.09) 0%, transparent 55%);
+   --gradient-accent: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #6366f1 100%);
+   --gradient-accent-soft: linear-gradient(
+      135deg,
+      rgba(167, 139, 250, 0.18) 0%,
+      rgba(99, 102, 241, 0.1) 100%
+   );
+   --gradient-card-shine: linear-gradient(
+      105deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.14) 45%,
+      transparent 60%
+   );
+}
+
+/* Accent gradient as a real background-image utility —
+ * NOTE: `bg-[var(--gradient-accent)]` compiles to background-color, not an image,
+ * which silently kills the button background. Use .bg-accent-gradient instead.
+ */
+.bg-accent-gradient {
+   background-image: var(--gradient-accent);
 }

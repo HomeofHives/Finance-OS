@@ -1,23 +1,20 @@
 import "dotenv/config";
 import { app } from "./app.js";
+import { env } from "./config/env.js";
 import { connectDatabase } from "./database/connection.js";
-
-connectDatabase();
-
-const PORT = Number(process.env.PORT) || 5000;
 
 const start = async () => {
    try {
+      // Initialize the database before accepting requests.
+      await connectDatabase();
+      app.log.info("Database connected");
 
-      await app.listen({ port: PORT, host: "0.0.0.0" });
+      await app.listen({ port: env.PORT, host: "0.0.0.0" });
 
-      console.log(`FinanceOS API running on port ${PORT}`);
-
+      app.log.info(`FinanceOS API running on port ${env.PORT}`);
    } catch (error) {
-
       app.log.error(error);
       process.exit(1);
-
    }
 };
 
