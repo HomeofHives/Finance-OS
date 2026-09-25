@@ -3,6 +3,7 @@ packages:
    - "packages/*"
    - "docs"
 allowBuilds:
+   argon2: true
    esbuild: true
 overrides:
    react: 19.3.0
